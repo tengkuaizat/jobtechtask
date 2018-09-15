@@ -228,22 +228,29 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="clearfix">
 			</div>
 			<!-- Content here -->
-			
-			<div class="col-md-12">
-				<div class=""  style="padding-top: 5px; padding-bottom: 5px;">
-					<div class="input-group">
-		                <input type="text" class="form-control border-color-light-turquoise" placeholder="Search Video" id="search">
-		                <span class="input-group-btn">
-		                    <button class="btn blue background-color-light-turquoise" type="button" id="search_button">Search</button>
-		                </span>
-		            </div>
+			<div class="row">
+				<div class="col-md-2">
+					 <select class="form-control" id="searchSelector" style="margin-top: 5px; margin-bottom: 5px;">
+				      <option selected value="video">Videos</option>
+				      <option value="image">Images</option>
+				    </select>
+				</div>
+
+				<div class="col-md-10">
+					<div class=""  style="padding-top: 5px; padding-bottom: 5px;">
+						<div class="input-group">
+			                <input type="text" class="form-control border-color-light-turquoise" placeholder="Search" id="searchInput">
+			                <span class="input-group-btn">
+			                    <button class="btn blue background-color-light-turquoise" type="button" id="search_button">Search</button>
+			                </span>
+			            </div>
+					</div>
+				</div>
+
+				<div id="resultDiv">
+					
 				</div>
 			</div>
-
-			<div id="resultDiv">
-				
-			</div>
-
 			<!-- End content here -->
 		</div>
 	</div>
@@ -334,9 +341,26 @@ function updateClock ( )
 
 <script type="text/javascript">
 	$( "#search_button" ).click(function() {
-		var mySearch = $( "#search" ).val();
+		search();
+	});
+
+	$('#searchInput').on('keypress', function (e) {
+	         if(e.which === 13){
+	            search();
+	         }
+	   });
+
+	function search(){
+		var mySearch = $( "#searchInput" ).val();
 		var API_KEY = '10129759-11d2d115db8a5f3ccbc2d5fcf';
-		var URL = "https://pixabay.com/api/videos/?key="+API_KEY+"&q="+encodeURIComponent(mySearch);
+		var mySelector = $( "#searchSelector" ).val();
+		if (mySelector == "video"){
+			var URL = "https://pixabay.com/api/videos/?key="+API_KEY+"&q="+encodeURIComponent(mySearch);
+		}
+		else {
+			var URL = "https://pixabay.com/api/?key="+API_KEY+"&q="+encodeURIComponent(mySearch) + "&image_type=photo";
+		}
+		
 
 		var myDiv = '';
 
@@ -355,21 +379,38 @@ function updateClock ( )
 		});
 
 		$.getJSON(URL, function(data){
-		if (parseInt(data.totalHits) > 0){
-		    $.each(data.hits, function(i, hit){
-		    	if(hit.downloads > 1000){
-		    		console.log(hit.downloads);
-		    		myDiv += '<div class="col-md-4"><img src="https://i.vimeocdn.com/video/'+ hit.picture_id +'_640x360.jpg" alt="'+ hit.tags +'"></div>';
-		    	}
-		    });
+			if (mySelector == "video"){
+				if (parseInt(data.totalHits) > 0){
+				    $.each(data.hits, function(i, hit){
+				    	if(hit.downloads > 1000){
+				    		console.log(hit.downloads);
+				    		myDiv += '<div class="col-md-4"><img class="img-responsive" src="https://i.vimeocdn.com/video/'+ hit.picture_id +'_640x360.jpg" alt="'+ hit.tags +'"><div class="col-md-12"><p>description</p></div></div>';
+				    	}
+				    });
 
-			$('#resultDiv').html(myDiv);
-		}
-		else{
-		    console.log('No hits');
-		}
+					$('#resultDiv').html(myDiv);
+				}
+				else{
+				    console.log('No hits');
+				}
+			}
+			else{
+
+				if (parseInt(data.totalHits) > 0){
+				    $.each(data.hits, function(i, hit){
+				    		myDiv += '<div class="col-md-4"><img class="img-responsive" src="'+ hit.webformatURL +'" alt="'+ hit.tags +'"><div class="col-md-12"><p>description</p></div></div>';
+				    	
+				    });
+
+					$('#resultDiv').html(myDiv);
+				}
+				else{
+				    console.log('No hits');
+				}
+			}
+		
 		});
-	});
+	}
 
 	
 </script>
