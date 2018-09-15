@@ -392,6 +392,8 @@ function updateClock ( )
 				}
 				else{
 				    console.log('No hits');
+				    myDiv = "";
+				    $('#resultDiv').html(myDiv);
 				}
 			}
 			else{
@@ -406,6 +408,8 @@ function updateClock ( )
 				}
 				else{
 				    console.log('No hits');
+				    myDiv = "";
+				    $('#resultDiv').html(myDiv);
 				}
 			}
 		
