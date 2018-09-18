@@ -120,7 +120,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				<li class="dropdown dropdown-user">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 					<span class="username username-hide-on-mobile">
-					username</span>
+					Jobtech Pixabay Task</span>
 					<i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-default">
@@ -384,7 +384,8 @@ function updateClock ( )
 				    $.each(data.hits, function(i, hit){
 				    	if(hit.downloads > 1000){
 				    		console.log(hit.downloads);
-				    		myDiv += '<div class="col-md-4"><img class="img-responsive" src="https://i.vimeocdn.com/video/'+ hit.picture_id +'_640x360.jpg" alt="'+ hit.tags +'"><div class="col-md-12"><p>description</p></div></div>';
+				    		console.log(hit.videos.large.url);
+				    		myDiv += '<div class="col-md-4"><a href="' + hit.videos.large.url + '"><img class="img-responsive" src="https://i.vimeocdn.com/video/'+ hit.picture_id +'_640x360.jpg" alt="'+ hit.tags +'"></a><div class="col-md-12"><p>Downloads : ' + hit.downloads + '</p></div></div>';
 				    	}
 				    });
 
@@ -400,7 +401,7 @@ function updateClock ( )
 
 				if (parseInt(data.totalHits) > 0){
 				    $.each(data.hits, function(i, hit){
-				    		myDiv += '<div class="col-md-4"><img class="img-responsive" src="'+ hit.webformatURL +'" alt="'+ hit.tags +'"><div class="col-md-12"><p>description</p></div></div>';
+				    		myDiv += '<div class="col-md-4"><img class="img-responsive" src="'+ hit.webformatURL +'" alt="'+ hit.tags +'"><div class="col-md-12"><p>Downloads : ' + hit.downloads + '</p></div></div>';
 				    	
 				    });
 
